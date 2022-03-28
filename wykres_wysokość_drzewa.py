@@ -1,3 +1,5 @@
+import math
+
 from matplotlib import pyplot as plt
 
 from wykres import read_measurement
@@ -6,6 +8,7 @@ if "__main__" == __name__:
     elements = read_measurement("name")
     tree_height = read_measurement("Wysokość drzewa BST")
     tree_height_avl = read_measurement("Wysokość drzewa AVL")
+
 
     plt.xlabel('Liczba elementów')
     plt.ylabel('Czas wykonania w sekundach')

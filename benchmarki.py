@@ -25,16 +25,13 @@ def save_measurement(name: str, measurements: List[float]):
 
 
 def find_iteratively(tab_b: List[int], tab_a: List[int]):
-    wyniki = []
     for b in tab_b:
         for i, a in enumerate(tab_a):
             if b == a:
-                wyniki.append(i)
+                break  # znalezione
 
 
 def find_by_bisection(tab_a: List[int], tab_b: List[int]):
-    wyniki = []
-
     for needle in tab_a:
         start = 0
         end = len(tab_b) - 1
@@ -44,9 +41,8 @@ def find_by_bisection(tab_a: List[int], tab_b: List[int]):
                 end = middle - 1
             elif tab_b[middle] < needle:
                 start = middle + 1
-            else:
-                wyniki.append(middle)
-                break
+            elif tab_b[middle] == needle:
+                break  # znalezione
 
 
 def stworz_tablice_b(tablica_a: List[int]) -> List[int]:
@@ -103,12 +99,14 @@ if __name__ == '__main__':
         benchmark_find_in_bst.append(
             benchmark_function(f"Szukanie w drzewie BST {step}", lambda: find_all(drzewo, tablica_b)))
 
-        drzewo_avl = DrzewoAVL.from_sorted_list(tablica_b)
+        auxiliary_table = DrzewoAVL.from_sorted_list(tablica_b).to_list_pre_order()
+        drzewo_avl = DrzewoBST.from_list(auxiliary_table)
         benchmark_budowa_drzewa_avl.append(
-            benchmark_function(f"Budowa drzewa AVL {step}", lambda: DrzewoAVL.from_sorted_list(tablica_b))
+            benchmark_function(f"Budowa drzewa AVL {step}", lambda: DrzewoBST.from_list(auxiliary_table))
         )
 
-        benchmark_find_in_avl.append(benchmark_function(f"Szukanie w drzewie AVL {step}", lambda: find_all(drzewo_avl, tablica_a)))
+        benchmark_find_in_avl.append(
+            benchmark_function(f"Szukanie w drzewie AVL {step}", lambda: find_all(drzewo_avl, tablica_a)))
 
         wysokości_drzewa.append(drzewo.get_height())
         wysokości_drzewa_avl.append(drzewo_avl.get_height())
